@@ -37,13 +37,22 @@ fi
 body="$(echo '{}' | jq -r \
     --arg MESSAGE "$message" \
     --arg TITLE "$title" \
-    '.title |= $TITLE | .message |= $MESSAGE'
+    --arg URL "$CI_PIPELINE_URL" \
+    '.title = $TITLE | .message = $MESSAGE | .data.url = $URL | .data.clickAction = $URL'
 )"
 
-echo "$body"
-
-curl -v -X POST \
+curl -X POST \
 -H "Authorization: Bearer $PLUGIN_TOKEN" \
 -H "Content-Type: application/json" \
 -d "$body" \
 "https://$PLUGIN_HOST/api/services/notify/$PLUGIN_NOTIFY_ID"
+
+echo ""
+
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Error while sending notification."
+    exit 1
+fi
+
+echo "Notification sent successfully."
