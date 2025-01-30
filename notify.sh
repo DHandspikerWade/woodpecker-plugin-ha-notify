@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+success_message="The $CI_REPO pipeline #$CI_PIPELINE_NUMBER has completed successfully."
+failed_message="The $CI_REPO pipeline #$CI_PIPELINE_NUMBER has failed."
+
+if [ -n "$PLUGIN_SUCCESS_MESSAGE" ]; then
+    success_message="$PLUGIN_SUCCESS_MESSAGE"
+fi
+
+if [ -n "$PLUGIN_FAILURE_MESSAGE" ]; then
+    failed_message="$PLUGIN_SUCCESS_MESSAGE"
+fi
+
+if [ -z "$PLUGIN_HOST" ]; then
+    echo 'ERROR: "host" is a required setting.' 
+    exit 1
+fi
+
+if [ -z "$PLUGIN_NOTIFY_ID" ]; then
+    echo 'ERROR: "notify-id" is a required setting.' 
+    exit 1
+fi
+
+if [ -z "$PLUGIN_TOKEN" ]; then
+    echo 'ERROR: "notify-id" is a required setting.' 
+    exit 1
+fi
+
+if [ "${CI_PIPELINE_STATUS}" == "success" ]; then
+    title="✔️ Successful $CI Pipeline"
+    message="$success_message"
+else
+    title="❌ Failed $CI Pipeline"
+    message="$failed_message"
+fi
+
+body="$(echo '{}' | jq -r \
+    --arg MESSAGE "$message" \
+    --arg TITLE "$title" \
+    '.title |= $TITLE | .message |= $MESSAGE'
+)"
+
+echo "$body"
+
+curl -v -X POST \
+-H "Authorization: Bearer $PLUGIN_TOKEN" \
+-H "Content-Type: application/json" \
+-d "$body" \
+"https://$PLUGIN_HOST/api/services/notify/$PLUGIN_NOTIFY_ID"
