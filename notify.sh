@@ -8,7 +8,7 @@ if [ -n "$PLUGIN_SUCCESS_MESSAGE" ]; then
 fi
 
 if [ -n "$PLUGIN_FAILURE_MESSAGE" ]; then
-    failed_message="$PLUGIN_SUCCESS_MESSAGE"
+    failed_message="$PLUGIN_FAILURE_MESSAGE"
 fi
 
 if [ -z "$PLUGIN_HOST" ]; then
@@ -27,10 +27,10 @@ if [ -z "$PLUGIN_TOKEN" ]; then
 fi
 
 if [ "${CI_PIPELINE_STATUS}" == "success" ]; then
-    title="✔️ Successful $CI Pipeline"
+    title="✔️ Successful $CI_SYSTEM_NAME Pipeline"
     message="$success_message"
 else
-    title="❌ Failed $CI Pipeline"
+    title="❌ Failed $CI_SYSTEM_NAME Pipeline"
     message="$failed_message"
 fi
 
