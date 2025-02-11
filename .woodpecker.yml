@@ -43,9 +43,9 @@ steps:
       from_secret: homeassistant_token
     notify_id:
       from_secret: homeassistant_notify
+    status: success # Assume if we've gotten here it's a pass
   when:
-    - status: [success, failure]
-      branch:
+    - branch:
       - ${CI_REPO_DEFAULT_BRANCH}
       event:
       - tag

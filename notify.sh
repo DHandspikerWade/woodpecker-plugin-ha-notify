@@ -2,6 +2,12 @@
 
 success_message="The $CI_REPO pipeline #$CI_PIPELINE_NUMBER has completed successfully."
 failed_message="The $CI_REPO pipeline #$CI_PIPELINE_NUMBER has failed."
+pipeline_status="$CI_PIPELINE_STATUS"
+
+if [ -n "$PLUGIN_STATUS" ]; then
+    # Allow users to override status. Needed to support WP > 3 due to always returning "running"
+    pipeline_status="$PLUGIN_STATUS"
+fi
 
 if [ -n "$PLUGIN_SUCCESS_MESSAGE" ]; then
     success_message="$PLUGIN_SUCCESS_MESSAGE"
