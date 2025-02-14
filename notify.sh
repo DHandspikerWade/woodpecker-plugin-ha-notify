@@ -32,7 +32,7 @@ if [ -z "$PLUGIN_TOKEN" ]; then
     exit 1
 fi
 
-if [ "${CI_PIPELINE_STATUS}" == "success" ]; then
+if [ "${pipeline_status}" == "success" ]; then
     title="✔️ Successful $CI_SYSTEM_NAME Pipeline"
     message="$success_message"
 else
