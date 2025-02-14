@@ -21,6 +21,7 @@ Plugin to send notifications of pipeline status via Home Assistant.
 | `notify_id`       | **Yes**  | ID notify service to use. (Ex: `mobile_app_my_phone`) [[Official Documentation](https://www.home-assistant.io/integrations/notify/)] |
 | `success_message` | No       | Optional. Message to display on success                                                                                              |
 | `failure_message` | No       | Optional. Message to display on failure                                                                                              |
+| `status`          | Depends  | Optional but required for Woodpecker >3.0 due to [woodpecker-ci/woodpecker#4337](https://github.com/woodpecker-ci/woodpecker/issues/4337). Workflow status override | 
 
 
 ## Usage
@@ -36,9 +37,9 @@ steps:
         from_secret: homeassistant_token
       notify_id:
         from_secret: homeassistant_notify
+      status: failure
     when:
-      - status: [success, failure]
-        event: [tag]
+      - event: [ tag ]
 ```
 
 ## Examples

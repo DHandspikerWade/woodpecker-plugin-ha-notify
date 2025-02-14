@@ -29,8 +29,7 @@ steps:
         from_secret: homeassistant_notify
       status: failure
     when:
-      - status: [ failure ]
-        event: [tag]
+      - event: [ tag ]
 ```
 
 ## Examples

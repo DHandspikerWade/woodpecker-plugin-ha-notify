@@ -23,7 +23,7 @@ steps:
       - latest
       - 1
       - ${CI_COMMIT_TAG}
-    auto_labels: false
+    default_labels: false
     dry_run: false
     pull_image: true
     platforms: linux/amd64,linux/arm64,linux/arm/v7
@@ -32,10 +32,9 @@ steps:
     - ${CI_REPO_DEFAULT_BRANCH}
     event:
     - tag
-    - manual
 
 - name: notify
-  image: ghcr.io/dhandspikerwade/woodpecker-plugin-ha-notify:1
+  image: ghcr.io/dhandspikerwade/woodpecker-plugin-ha-notify:1.0.2
   settings:
     host:
       from_secret: homeassistant_host
